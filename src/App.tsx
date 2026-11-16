@@ -230,7 +230,7 @@ export default function App() {
       <main className="w-full max-w-[720px] mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-8 flex-1 flex flex-col">
         <header className="mb-6">
           <h1 className="text-[28px] sm:text-[32px] font-bold leading-tight tracking-[-0.01em] text-[#1d1d1f]">
-            Product Data Sheet (PDS) Look-up
+            PDS/ MSDS Look-up
           </h1>
           <p className="mt-1.5 text-[15px] text-[#86868b] glass-text-secondary">
             Type part of a file name.
