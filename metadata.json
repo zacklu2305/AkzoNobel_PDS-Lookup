@@ -1,0 +1,8 @@
+{
+  "name": "PDS Look-up",
+  "description": "PDS Look-up by Zack Lu",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
