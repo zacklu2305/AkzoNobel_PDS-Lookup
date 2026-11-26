@@ -1,0 +1,1951 @@
+Apply the design system below to this app. Scope lock: change ONLY the visual style (colors, fonts, spacing, shapes, effects). Do NOT change any feature, data, button action or layout logic that already works.
+
+Rules:
+- Use the exact values and code from the design system. Do not substitute or "improve" them.
+- If a value is "unknown" or conflicts with an existing feature, keep the current one and tell me which one.
+- Put all design values in one single place so they can be edited or switched off at once.
+- After applying, check every screen: no text hidden, no button broken, all features still working.
+
+DESIGN SYSTEM:
+1. Design Concept
+Text
+Style & Mood:
+Apple-inspired "Liquid Glass" enterprise dashboard built on a cool ice-blue canvas (#eef2fb) with three soft, static navy/cobalt/sky ambient glow blobs behind translucent frosted-white surfaces. The mood is crisp, airy, calm, and high-precision — corporate AkzoNobel navy (#00227A) anchors every primary action and active state, while neutral charcoal ink (#1d1d1f) and muted Apple-style grays (#525257, #86868b) keep dense analytics, tables, and admin workflows effortless to scan.
+
+What Makes It Look Unique:
+1. Layered translucency without visual clutter: Only top-level primary surfaces (the floating sticky navigation bar and main section cards) use real backdrop blur + high saturation (`blur(24px) saturate(180%)`), a translucent white fill (`rgba(255, 255, 255, 0.55)`), an inner top highlight (`inset 0 1px 0 rgba(255, 255, 255, 0.6)`), and a 1px diagonal specular gradient border (`135deg`, bright top-left fading to subtle bottom-right).
+2. Strict "no nested blur" discipline: Everything inside a glass panel (pills, inputs, inset boxes, table wrappers, dropdown menus) uses translucent or solid white fills with subtle hairline borders and zero `backdrop-filter`, preventing muddiness and keeping performance fast.
+3. Floating pill geometry: The sticky header floats with 12px top clearance and 24px corners; all navigation tabs, filter slicer chips, and action buttons are full capsules (`border-radius: 9999px`) that snap to solid deep navy (#00227A) with a soft blue elevation shadow when active.
+4. Editorial tabular precision: System Apple / Inter typography paired with monospaced tabular numerals (`.font-mono-num`) for every case number, date, count, and currency value, plus 11px uppercase tracked labels (`tracking-[0.04em]`) for metadata and table headers.
+5. Distinct corporate chart palette: Charts stand out cleanly against frosted white using a strict 6-color corporate palette (deep blue, magenta-rose, violet, cyan-blue, plum, royal indigo) that repeats at 60% (and 35% where needed) opacity for additional series.
+________________________________________
+2. Exact Values
+Text
+================================================================================
+COLORS (HEX & RGBA)
+================================================================================
+Canvas & Neutrals:
+  Page background:                 #eef2fb
+  Primary text ink:                #1d1d1f
+  Secondary text / icon ink:       #525257
+  Muted / label / placeholder ink: #86868b
+  Inverse text (on filled btns):   #ffffff
+  Solid dropdown background:       #ffffff
+  Dropdown option hover / active:  #eef2fb
+  Dropdown footer hint surface:    #f5f7fc
+  Sticky editable table header:    #f1f4fb
+
+Brand & Primary Interactive Accent:
+  Primary accent (--accent-blue):        #00227A
+  Primary accent hover (--accent-hover): #0a35a3
+  Dirty / editing row highlight:         rgba(0, 34, 122, 0.06)   (#00227A at 6%)
+  Chart hover cursor fill:               rgba(0, 34, 122, 0.05)   (#00227A at 5%)
+  Focus ring glow:                       rgba(0, 34, 122, 0.14)
+  Secondary button hover border:         rgba(0, 34, 122, 0.2)
+  Pill hover border:                     rgba(0, 34, 122, 0.22)
+  Outline toggle button border:          rgba(0, 34, 122, 0.45)
+
+Semantic / Status Colors:
+  Error / Danger / Destructive:          #ff3b30
+  Danger button hover (dialog):          #e0352b
+  Danger text button hover (inline):     #d62c22
+  Error banner background:               rgba(255, 59, 48, 0.1)   (#ff3b30 at 10%)
+  Error inline feedback background:      rgba(255, 59, 48, 0.09)  (#ff3b30 at 9%)
+  Error banner border:                   rgba(255, 59, 48, 0.25)  (#ff3b30 at 25%)
+  Success (status text / icons / badge): #34c759
+  Success (high-contrast text / icon):   #248a3d
+  Success inline feedback background:    rgba(52, 199, 89, 0.1)   (#34c759 at 10%)
+  Success inline feedback border:        rgba(52, 199, 89, 0.25)  (#34c759 at 25%)
+  Warning / Open status:                 #ff9500
+
+Ambient Background Blobs (static radial gradients):
+  .liquid-blob-navy:   radial-gradient(circle, rgba(0, 34, 122, 0.3) 0%, rgba(0, 34, 122, 0) 70%)
+  .liquid-blob-cobalt: radial-gradient(circle, rgba(61, 107, 220, 0.25) 0%, rgba(61, 107, 220, 0) 70%)
+  .liquid-blob-sky:    radial-gradient(circle, rgba(143, 176, 255, 0.3) 0%, rgba(143, 176, 255, 0) 70%)
+
+Glass & Translucent Surface Fills:
+  .glass-nav / .glass-panel:             rgba(255, 255, 255, 0.55) (--glass-alpha)
+  .glass-nav / .glass-panel fallback:    rgba(255, 255, 255, 0.88) (@supports not backdrop-filter)
+  .glass-pill (resting / hover):         rgba(255, 255, 255, 0.45) / rgba(255, 255, 255, 0.75)
+  .glass-btn-secondary (resting / hover):rgba(255, 255, 255, 0.55) / rgba(255, 255, 255, 0.82)
+  .glass-translate-btn (resting / hover):rgba(255, 255, 255, 0.5)  / rgba(255, 255, 255, 0.82)
+  .glass-input (resting / focus):        rgba(255, 255, 255, 0.65) / rgba(255, 255, 255, 0.94)
+  .glass-inset:                          rgba(255, 255, 255, 0.48)
+  .glass-table-wrap:                     rgba(255, 255, 255, 0.56)
+  Chart tooltip background:              rgba(255, 255, 255, 0.96)
+  Diff metrics card inside modal/inset:  rgba(255, 255, 255, 0.75)
+  Modal backdrop overlay:                rgba(0, 0, 0, 0.3)
+  Switch track (off):                    rgba(0, 0, 0, 0.15)
+
+Borders & Hairline Dividers:
+  Glass specular border (::before):      linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.12) 100%)
+  .glass-pill resting border:            rgba(255, 255, 255, 0.6)
+  Inset border / row dividers:           rgba(0, 0, 0, 0.06)
+  Table wrap & thead border:             rgba(0, 0, 0, 0.07)
+  Inputs / secondary btns / grid lines:  rgba(0, 0, 0, 0.08)
+  Table footer border:                   rgba(0, 0, 0, 0.09)
+  Dropdown & sticky thead border:        rgba(0, 0, 0, 0.1)
+  Chart X-axis & Excel table top border: rgba(0, 0, 0, 0.12)
+
+Chart Series Palette (exact order):
+  1: #005192
+  2: #E0457A
+  3: #542C97
+  4: #008BC5
+  5: #A8269A
+  6: #000394
+  7-12: same 6 colors in same order at 60% opacity -> rgba(r, g, b, 0.6)
+  13+ (Wood Adhesives Chart 2 only): same 6 colors in same order at 35% opacity -> rgba(r, g, b, 0.35)
+
+================================================================================
+TYPOGRAPHY (FONTS, WEIGHTS, SIZES, TRACKING)
+================================================================================
+Webfont loaded in index.html:
+  Inter (Google Fonts) — weights: 400, 500, 600, 700
+
+Font Families:
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace
+  .font-mono-num: font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+
+Font Smoothing:
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+Type Scale:
+  17px (font-semibold, tracking -0.01em): App header H1 (sm+), Login H2, Modal H3
+  16px (font-semibold, tracking -0.01em): App header H1 (mobile), Error H2
+  16px (mobile) / 13px (sm+):             Text inputs on mobile-accessible forms (avoids iOS zoom)
+  15px (font-semibold, tracking -0.01em): Section / Card H2 headings, Loading title
+  14px (font-normal / font-semibold):     Dialog message, Empty-state copy, Sub-panel H3
+  13px (font-normal / font-medium):       Primary body copy, Nav tabs, Buttons, Table cells, Inputs (desktop), Banners
+  12px (font-normal / font-medium):       Header organization subtitle, Slicer chips, Outline/Translate/Export buttons, Chart ticks & legends, Tooltips, Metadata captions, Footer
+  11px (font-medium/semibold, uppercase, tracking 0.04em): Field labels, Slicer row labels, Table column headers
+  11px (font-mono-num):                   Compact Y-axis ticks, Stacked bar top total labels, Excel-style chart data table
+  10px (font-semibold, font-mono-num):    Inside stacked bar segment labels
+
+Letter Spacing:
+  h1, h2, h3, h4:        -0.01em
+  Uppercase labels/th:    0.04em
+  6-digit code input:     0.2em
+
+================================================================================
+CORNER RADII
+================================================================================
+  9999px (full pill):  .glass-pill, .glass-pill-active, .glass-btn-primary, .glass-btn-secondary,
+                       .glass-translate-btn, danger confirm button, toggle switch track & thumb,
+                       circular icon badges, ambient background blobs
+  24px:                .glass-nav, .glass-panel
+  16px:                .glass-inset, .glass-table-wrap, ChartTooltip, ViewCase dropdown, Admin CSV error boxes
+  14px:                AdminCaseClassification feedback banner & Add-Record dropdown
+  12px:                .glass-input, DiffMetricsGrid container
+  5px 5px 0 0:         Top-rounded chart bars (SHARED_CHART_STYLE.barRadiusTop)
+  3px:                 Chart tooltip series color swatch
+  2px:                 Chart data-table series color swatch
+
+================================================================================
+SPACING & DIMENSIONS
+================================================================================
+  Page main max-width:       1440px (px-4 sm:px-6 lg:px-8 pt-6 pb-8)
+  Sticky header max-width:   1376px (w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)])
+  Sticky header offset:      top: 12px; mt-3 (12px); px-4 sm:px-6 py-3
+  Header logo size:          height 22px (<= 768px), height 28px (>= 769px), width auto, gap 12px (gap-3)
+  Section vertical gap:      24px (space-y-6 / gap-6)
+  Card padding:              24px (p-6) standard cards; 20px (p-5) filter/control cards; 24px/32px (p-6 sm:p-8) login card
+  Input heights:             36px (h-9) inline/select; 40px (h-10) standard/search; 44px (h-11) login
+  Translate/Export button:   height 32px, padding 0 14px (desktop); height 36px, width 100% (<= 768px)
+  Nav tab pills:             px-4 py-1.5 (16px x 6px)
+  Slicer chips:              px-3 py-1 (12px x 4px)
+  Primary/Secondary buttons: px-5 py-2 or px-5 py-2.5 (dialog), or h-9 / h-10 with px-4 / px-5
+  Chart heights:             Chart 1: 340px; Chart 2: 360px; Chart 3: 360px
+
+Breakpoints:
+  sm: 640px | md: 768px | lg: 1024px | xl: 1280px
+  Custom CSS media queries: max-width: 767px (blur 24px -> 12px), max-width: 768px (translate button mobile layout), min-width: 769px (header logo 22px -> 28px)
+
+================================================================================
+SHADOWS
+================================================================================
+  .glass-nav / .glass-panel:     0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6)
+  .glass-pill-active:            0 4px 12px rgba(0, 34, 122, 0.26)
+  .glass-btn-primary:            0 4px 14px rgba(0, 34, 122, 0.26)
+  .glass-btn-primary:hover:      0 6px 18px rgba(10, 53, 163, 0.3)
+  .glass-translate-btn-active:   0 3px 10px rgba(0, 34, 122, 0.24)
+  .glass-input:focus:            0 0 0 3px rgba(0, 34, 122, 0.14)
+  Danger confirm button:         0 4px 12px rgba(255, 59, 48, 0.28)
+  ChartTooltip:                  0 8px 24px rgba(0, 0, 0, 0.14)
+  View Case combobox dropdown:   0 12px 32px rgba(0, 0, 0, 0.14)
+  Admin Add-Record dropdown:     0 12px 28px rgba(0, 0, 0, 0.14)
+  Inside bar white label text:   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28)
+  Toggle switch thumb:           Tailwind shadow-sm
+
+================================================================================
+BLUR & GLASS EFFECTS
+================================================================================
+  --glass-alpha: 0.55
+  --glass-blur:  24px (desktop), 12px (max-width: 767px)
+  Primary glass backdrop:
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  Ambient blob blurs:
+    .liquid-blob-navy:   width 620px; height 620px; top -120px; left -80px; filter: blur(80px);
+    .liquid-blob-cobalt: width 680px; height 680px; top 22%; right -120px; filter: blur(90px);
+    .liquid-blob-sky:    width 720px; height 720px; bottom -160px; left 28%; filter: blur(90px);
+  Nested elements inside glass: NO backdrop-filter.
+
+================================================================================
+ANIMATION TIMINGS
+================================================================================
+  Custom CSS transitions (.glass-pill, .glass-pill-active, .glass-btn-primary,
+  .glass-btn-secondary, .glass-input, .glass-translate-btn):
+    150ms ease
+  Tailwind transition utilities (transition-colors, transition-all, transition-transform, duration-150):
+    150ms cubic-bezier(0.4, 0, 0.2, 1) (Tailwind CSS v4 default)
+  Spinner (loading ring & Refresh icon while refreshing):
+    Tailwind animate-spin (1s linear infinite)
+  Ambient background blobs:
+    None (explicitly static)
+  Modals / dropdowns open/close:
+    None (instant show/hide)
+________________________________________
+3. Complete Shared Style Code
+CSS
+/* ============================================================================
+   FILE: src/index.css (copied verbatim)
+   ============================================================================ */
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --accent-blue: #00227A;
+    --accent-blue-hover: #0a35a3;
+    --glass-alpha: 0.55;
+    --glass-blur: 24px;
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --glass-blur: 12px;
+    }
+  }
+
+  html,
+  body {
+    font-family: var(--font-sans);
+    background-color: #eef2fb;
+    color: #1d1d1f;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.01em;
+  }
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fixed ambient color blobs behind Liquid Glass surfaces (static, no animation) */
+.liquid-bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: #eef2fb;
+}
+
+.liquid-blob-navy {
+  position: absolute;
+  top: -120px;
+  left: -80px;
+  width: 620px;
+  height: 620px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(0, 34, 122, 0.3) 0%, rgba(0, 34, 122, 0) 70%);
+  filter: blur(80px);
+}
+
+.liquid-blob-cobalt {
+  position: absolute;
+  top: 22%;
+  right: -120px;
+  width: 680px;
+  height: 680px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(61, 107, 220, 0.25) 0%, rgba(61, 107, 220, 0) 70%);
+  filter: blur(90px);
+}
+
+.liquid-blob-sky {
+  position: absolute;
+  bottom: -160px;
+  left: 28%;
+  width: 720px;
+  height: 720px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(143, 176, 255, 0.3) 0%, rgba(143, 176, 255, 0) 70%);
+  filter: blur(90px);
+}
+
+/* Apple Liquid Glass primary surfaces (.glass-nav and .glass-panel) */
+.glass-nav,
+.glass-panel {
+  background: rgba(255, 255, 255, var(--glass-alpha));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+}
+
+.glass-nav {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+}
+
+.glass-panel {
+  position: relative;
+}
+
+/* 1px light gradient border (brighter top-left, dimmer bottom-right) */
+.glass-nav::before,
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-nav,
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.88);
+  }
+}
+
+/* Translucent pill buttons and slicer chips — NO backdrop-filter (nested inside glass) */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #1d1d1f;
+  border-radius: 9999px;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 34, 122, 0.22);
+}
+
+.glass-pill-active {
+  background: #00227A;
+  border: 1px solid #00227A;
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 34, 122, 0.26);
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.glass-pill-active:hover {
+  background: #0a35a3;
+  border-color: #0a35a3;
+}
+
+/* Primary & secondary buttons inside glass */
+.glass-btn-primary {
+  background: #00227A;
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(0, 34, 122, 0.26);
+  transition: background-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+}
+
+.glass-btn-primary:hover:not(:disabled) {
+  background: #0a35a3;
+  box-shadow: 0 6px 18px rgba(10, 53, 163, 0.3);
+}
+
+.glass-btn-secondary {
+  background: rgba(255, 255, 255, 0.55);
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
+.glass-btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(0, 34, 122, 0.2);
+}
+
+/* Inputs inside glass surfaces — no backdrop-filter */
+.glass-input {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  color: #1d1d1f;
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: #00227A;
+  box-shadow: 0 0 0 3px rgba(0, 34, 122, 0.14);
+  outline: none;
+}
+
+/* Subtle nested container inside .glass-panel — no backdrop-filter */
+.glass-inset {
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+}
+
+/* Table wrapper inside .glass-panel */
+.glass-table-wrap {
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 16px;
+}
+
+/* Translation toggle pill button inside .glass-panel — NO backdrop-filter (nested inside glass) */
+.glass-translate-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.glass-translate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: #00227A;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 34, 122, 0.45);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.glass-translate-btn:hover:not(.glass-translate-btn-active) {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: #00227A;
+}
+
+.glass-translate-btn-active {
+  background: #00227A;
+  border-color: #00227A;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 34, 122, 0.24);
+}
+
+.glass-translate-btn-active:hover {
+  background: #0a35a3;
+  border-color: #0a35a3;
+}
+
+@media (max-width: 768px) {
+  .glass-translate-wrap {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .glass-translate-btn {
+    width: 100%;
+    height: 36px;
+    font-size: 13px;
+  }
+}
+
+/* ============================================================================
+   FILE: index.html (Font loading & body classes, lines 12-19, copied verbatim)
+   ============================================================================ */
+/*
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#eef2fb] text-[#1d1d1f] antialiased">
+*/
+
+/* ============================================================================
+   FILE: src/config.ts (Shared Chart Styling & Palette, copied verbatim)
+   ============================================================================ */
+/*
+export const SHARED_CHART_STYLE = {
+  gridStroke: 'rgba(0,0,0,0.08)',
+  gridDasharray: '3 3',
+  axisLineStroke: 'rgba(0,0,0,0.12)',
+  tickFill: '#1d1d1f',
+  tickFontSize: 12,
+  tickFontSizeCompact: 11,
+  monoFontFamily: 'var(--font-mono)',
+  cursorFill: 'rgba(0,34,122,0.05)',
+  legendWrapperStyle: { fontSize: 12, paddingTop: 10, color: '#1d1d1f' },
+  legendCompactWrapperStyle: { fontSize: 12, paddingTop: 6, color: '#1d1d1f' },
+  legendIconType: 'circle' as const,
+  legendIconSize: 8,
+  barRadiusTop: [5, 5, 0, 0] as [number, number, number, number],
+  barRadiusFlat: [0, 0, 0, 0] as [number, number, number, number],
+  topLabelStyle: {
+    fill: '#1d1d1f',
+    fontSize: 11,
+    fontFamily: 'var(--font-mono)',
+    fontWeight: 600,
+  },
+  chart1: {
+    heightClass: 'h-[340px]',
+    barCategoryGap: '20%',
+    barGap: 3,
+    maxBarSize: 38,
+  },
+  chart2: {
+    heightClass: 'h-[360px]',
+    barCategoryGap: '24%',
+    maxBarSize: 48,
+  },
+  chart3: {
+    heightClass: 'h-[360px]',
+    barCategoryGap: '24%',
+    maxBarSize: 48,
+  },
+} as const;
+
+export const CHART_SERIES_PALETTE = [
+  '#005192',
+  '#E0457A',
+  '#542C97',
+  '#008BC5',
+  '#A8269A',
+  '#000394',
+] as const;
+
+export function getChartPaletteColor(index: number): string {
+  const safeIndex = Math.max(0, Math.floor(index));
+  const hex = CHART_SERIES_PALETTE[safeIndex % CHART_SERIES_PALETTE.length];
+  if (safeIndex < CHART_SERIES_PALETTE.length) {
+    return hex;
+  }
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, 0.6)`;
+}
+4. Complete Copy-Ready Code for Each Reusable Element
+Tsx
+// ============================================================================
+// A. BUTTONS (copied verbatim from app components)
+// ============================================================================
+
+// 1. Primary Button (src/components/AdminTab.tsx)
+<button
+  type="button"
+  disabled={parsingCsv || uploadingCsv || autoTranslating}
+  onClick={() => fileInputRef.current?.click()}
+  className="glass-btn-primary inline-flex items-center gap-2 px-5 py-2 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0"
+>
+  <Upload className="h-4 w-4" />
+  {parsingCsv
+    ? UI_TEXT.admin.parsingFile
+    : UI_TEXT.admin.chooseCsvButton}
+</button>
+
+// 2. Full-Width Form Submit Primary Button (src/components/AdminLogin.tsx)
+<button
+  type="submit"
+  disabled={busy || emailInput.trim() === ''}
+  className="glass-btn-primary h-10 w-full px-5 text-[13px] font-medium disabled:opacity-50"
+>
+  {busy ? t.sendingCodeButton : t.sendCodeButton}
+</button>
+
+// 3. Secondary Button (src/components/AdminTab.tsx)
+<button
+  type="button"
+  disabled={restoringPrev || uploadingCsv || autoTranslating}
+  onClick={() => setRestoreDialogOpen(true)}
+  className="glass-btn-secondary inline-flex items-center gap-2 px-5 py-2 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0"
+>
+  <History className="h-4 w-4 text-[#86868b]" />
+  {restoringPrev
+    ? UI_TEXT.admin.restoringButton
+    : UI_TEXT.admin.restoreButton}
+</button>
+
+// 4. Danger Action Button (src/components/ConfirmDialog.tsx)
+<button
+  type="button"
+  disabled={busy}
+  onClick={onConfirm}
+  className={`${
+    confirmTone === 'danger'
+      ? 'rounded-full bg-[#ff3b30] hover:bg-[#e0352b] text-white shadow-[0_4px_12px_rgba(255,59,48,0.28)] transition-all'
+      : 'glass-btn-primary'
+  } px-5 py-2.5 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0`}
+>
+  {confirmLabel}
+</button>
+
+// 5. Glass Pill Action Button (src/App.tsx — Refresh button)
+<button
+  type="button"
+  disabled={loading || refreshing}
+  onClick={() => void loadData(false)}
+  className="glass-pill inline-flex items-center gap-1.5 px-4 py-1.5 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0"
+>
+  <RefreshCw
+    className={`h-3.5 w-3.5 text-[#525257] ${
+      refreshing ? 'animate-spin text-[#00227A]' : ''
+    }`}
+  />
+  {refreshing ? UI_TEXT.app.refreshing : UI_TEXT.app.refresh}
+</button>
+
+// 6. Outline Pill Action Button (src/components/ExportPptxButton.tsx — complete file)
+import { useState } from 'react';
+import { Download } from 'lucide-react';
+import {
+  PPTX_EXPORT_ENABLED,
+  exportDashboardToPptx,
+  type ExportDashboardPptxParams,
+} from '../utils/pptxExport';
+
+export function ExportPptxButton(props: ExportDashboardPptxParams) {
+  const [exporting, setExporting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  if (!PPTX_EXPORT_ENABLED) {
+    return null;
+  }
+
+  const handleClick = async () => {
+    if (exporting) return;
+    setExporting(true);
+    setErrorMsg(null);
+    try {
+      await exportDashboardToPptx(props);
+    } catch (err) {
+      const reason =
+        err instanceof Error && err.message.trim()
+          ? err.message.trim()
+          : 'Export failed. Please try again.';
+      setErrorMsg(reason);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  return (
+    <div className="flex justify-end">
+      <div className="glass-translate-wrap">
+        {errorMsg && (
+          <span role="alert" className="text-[12px] text-[#ff3b30]">
+            {errorMsg}
+          </span>
+        )}
+        <button
+          type="button"
+          disabled={exporting}
+          onClick={() => void handleClick()}
+          className="glass-translate-btn gap-1.5 disabled:opacity-50"
+        >
+          <Download className="h-3.5 w-3.5" />
+          {exporting ? 'Exporting...' : 'Export PPTX'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// 7. Outline Toggle Pill Button (src/components/TranslationToggleButton.tsx — complete file)
+import { useEffect, useState } from 'react';
+import { SETTINGS, UI_TEXT } from '../config';
+import type { DisplayLanguage, TranslationsState } from '../types';
+
+interface TranslationToggleButtonProps {
+  value: DisplayLanguage;
+  onChange: (next: DisplayLanguage) => void;
+  translationsState: TranslationsState;
+}
+
+export function TranslationToggleButton({
+  value,
+  onChange,
+  translationsState,
+}: TranslationToggleButtonProps) {
+  const [showUnavailableNote, setShowUnavailableNote] = useState(false);
+
+  const isUnavailable =
+    translationsState.status === 'unavailable' ||
+    translationsState.status === 'empty';
+
+  // Clear note once translations become ready
+  useEffect(() => {
+    if (translationsState.status === 'ready') {
+      setShowUnavailableNote(false);
+    }
+  }, [translationsState.status]);
+
+  if (!SETTINGS.TRANSLATION_SWITCH_ENABLED) {
+    return null;
+  }
+
+  const isEnglishActive = value === 'english' && !isUnavailable;
+  const displayUnavailableNote =
+    showUnavailableNote || (value === 'english' && isUnavailable);
+
+  const handleClick = () => {
+    if (value === 'english') {
+      setShowUnavailableNote(false);
+      onChange('original');
+      return;
+    }
+
+    if (isUnavailable) {
+      setShowUnavailableNote(true);
+      return;
+    }
+
+    setShowUnavailableNote(false);
+    onChange('english');
+  };
+
+  return (
+    <div className="glass-translate-wrap">
+      {displayUnavailableNote && (
+        <span className="text-[12px] text-[#86868b]">
+          {UI_TEXT.translationSwitch.unavailableNote}
+        </span>
+      )}
+      <button
+        type="button"
+        aria-pressed={isEnglishActive}
+        onClick={handleClick}
+        className={`glass-translate-btn ${
+          isEnglishActive ? 'glass-translate-btn-active' : ''
+        }`}
+      >
+        {isEnglishActive
+          ? UI_TEXT.translationSwitch.showOriginal
+          : UI_TEXT.translationSwitch.translateToEnglish}
+      </button>
+    </div>
+  );
+}
+
+// 8. Inline Table Action Text Buttons (src/components/AdminCaseClassification.tsx)
+<div className="flex items-center gap-3">
+  <button
+    type="button"
+    disabled={sectionBusy}
+    onClick={() => startEditRow(entry, originalIndex)}
+    className="text-[13px] font-medium text-[#00227A] hover:text-[#0a35a3] disabled:opacity-45"
+  >
+    {t.actions.edit}
+  </button>
+  <button
+    type="button"
+    disabled={sectionBusy}
+    onClick={() => {
+      setFeedback(null);
+      setDeleteTargetCase(entry.case);
+    }}
+    className="text-[13px] font-medium text-[#ff3b30] hover:text-[#d62c22] disabled:opacity-45"
+  >
+    {t.actions.delete}
+  </button>
+</div>
+
+// 9. Apple-Style Toggle Switch (src/components/AdminTab.tsx)
+<label className="inline-flex cursor-pointer items-center gap-2.5 select-none">
+  <span className="text-[13px] font-medium text-[#1d1d1f]">
+    {UI_TEXT.admin.allCasesSwitch}
+  </span>
+  <button
+    type="button"
+    role="switch"
+    aria-checked={showAllCases}
+    onClick={() => setShowAllCases((prev) => !prev)}
+    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
+      showAllCases ? 'bg-[#00227A]' : 'bg-black/15'
+    }`}
+  >
+    <span
+      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
+        showAllCases ? 'translate-x-[22px]' : 'translate-x-[2px]'
+      }`}
+    />
+  </button>
+</label>
+
+
+// ============================================================================
+// B. INPUTS (copied verbatim from app components)
+// ============================================================================
+
+// 1. Standard Form Input with Uppercase Label & Inline Error (src/components/AdminLogin.tsx)
+<div className="flex flex-col gap-1.5">
+  <label
+    htmlFor="admin-access-id"
+    className="text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] px-1"
+  >
+    {t.emailLabel}
+  </label>
+  <input
+    id="admin-access-id"
+    name="admin-access-id"
+    type="text"
+    inputMode="email"
+    autoComplete="off"
+    autoCorrect="off"
+    autoCapitalize="off"
+    spellCheck={false}
+    required
+    disabled={busy}
+    value={emailInput}
+    onChange={(e) => setEmailInput(e.target.value)}
+    placeholder={t.emailPlaceholder}
+    className="glass-input h-11 w-full px-3.5 text-[16px] sm:text-[13px] placeholder:text-[#86868b] disabled:opacity-60"
+  />
+  {feedback && feedback.type === 'error' && (
+    <p
+      role="alert"
+      className="pt-1 text-[13px] leading-relaxed font-medium text-[#ff3b30]"
+    >
+      {feedback.message}
+    </p>
+  )}
+</div>
+
+// 2. Monospace Code Input (src/components/AdminLogin.tsx)
+<input
+  id="admin-access-pin"
+  name="admin-access-pin"
+  type="text"
+  inputMode="numeric"
+  autoComplete="off"
+  autoCorrect="off"
+  autoCapitalize="off"
+  spellCheck={false}
+  maxLength={6}
+  required
+  disabled={busy}
+  value={codeInput}
+  onChange={(e) => handleCodeChange(e.target.value)}
+  onPaste={handleCodePaste}
+  placeholder={t.codePlaceholder}
+  className="glass-input h-11 w-full px-3.5 text-[16px] sm:text-[14px] font-mono-num tracking-[0.2em] placeholder:tracking-normal placeholder:text-[#86868b] disabled:opacity-60"
+/>
+
+// 3. Search Input with Leading Icon (src/components/AdminCaseClassification.tsx)
+<div className="relative flex-1 min-w-[200px] sm:max-w-xs">
+  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#86868b]" />
+  <input
+    type="text"
+    value={searchCase}
+    onChange={(e) => setSearchCase(e.target.value)}
+    placeholder={t.searchPlaceholder}
+    className="glass-input h-10 w-full pl-9 pr-3 text-[16px] sm:text-[13px] placeholder:text-[#86868b]"
+  />
+</div>
+
+// 4. Native Select Dropdown (src/components/InsightsTab.tsx)
+<div className="flex flex-col gap-1.5 min-w-[220px] flex-1 sm:flex-initial sm:min-w-[260px]">
+  <label
+    htmlFor="insights-category-select"
+    className="text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] px-1"
+  >
+    {UI_TEXT.insights.controls.category}
+  </label>
+  <select
+    id="insights-category-select"
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+    className="glass-input h-9 px-3 text-[13px] font-medium text-[#1d1d1f]"
+  >
+    {categories.length === 0 ? (
+      <option value="">—</option>
+    ) : (
+      categories.map((cat) => (
+        <option key={cat} value={cat}>
+          {cat}
+        </option>
+      ))
+    )}
+  </select>
+</div>
+
+// 5. Searchable Combobox with Solid White Dropdown Panel (src/components/ViewCaseTab.tsx)
+<div
+  ref={comboContainerRef}
+  className="relative flex flex-col gap-1.5 w-full sm:max-w-sm"
+>
+  <label
+    htmlFor="view-case-combobox"
+    className="text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] px-1"
+  >
+    {UI_TEXT.viewCase.inputLabel}
+  </label>
+  <div className="relative">
+    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#86868b]" />
+    <input
+      ref={inputRef}
+      id="view-case-combobox"
+      type="text"
+      role="combobox"
+      aria-expanded={dropdownOpen}
+      aria-controls="view-case-listbox"
+      aria-autocomplete="list"
+      autoComplete="off"
+      disabled={isDisabled}
+      value={isDisabled ? '' : inputText}
+      placeholder={
+        isDisabled
+          ? UI_TEXT.viewCase.loadingCases
+          : UI_TEXT.viewCase.inputPlaceholder
+      }
+      onClick={() => {
+        if (!isDisabled) setDropdownOpen(true);
+      }}
+      onFocus={() => {
+        if (!isDisabled) setDropdownOpen(true);
+      }}
+      onChange={(e) => {
+        setInputText(e.target.value);
+        if (!dropdownOpen) setDropdownOpen(true);
+      }}
+      onKeyDown={handleKeyDown}
+      className="glass-input h-10 w-full pl-9 pr-14 text-[13px] font-mono-num placeholder:font-sans placeholder:text-[#86868b] disabled:opacity-60 disabled:cursor-not-allowed"
+    />
+    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+      {!isDisabled && (selectedCaseNo || inputText) && (
+        <button
+          type="button"
+          onClick={handleClearChoice}
+          aria-label={UI_TEXT.viewCase.clearCaseLabel}
+          className="flex h-6 w-6 items-center justify-center rounded-full text-[#86868b] hover:bg-black/[0.06] hover:text-[#1d1d1f] transition-colors"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+      <button
+        type="button"
+        tabIndex={-1}
+        disabled={isDisabled}
+        aria-label={UI_TEXT.viewCase.inputLabel}
+        onClick={() => {
+          if (isDisabled) return;
+          setDropdownOpen((prev) => !prev);
+          inputRef.current?.focus();
+        }}
+        className="flex h-6 w-6 items-center justify-center rounded-full text-[#86868b] hover:text-[#1d1d1f] transition-colors disabled:opacity-50"
+      >
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-150 ${
+            dropdownOpen ? 'rotate-180 text-[#00227A]' : ''
+          }`}
+        />
+      </button>
+    </div>
+  </div>
+
+  {/* Plain solid white dropdown panel (NO backdrop-filter) */}
+  {dropdownOpen && !isDisabled && (
+    <div className="absolute left-0 top-[calc(100%+6px)] z-40 w-full rounded-[16px] bg-white border border-black/[0.1] shadow-[0_12px_32px_rgba(0,0,0,0.14)] overflow-hidden">
+      {filteredCases.length === 0 ? (
+        <div className="px-4 py-3 text-[13px] text-[#86868b]">
+          {UI_TEXT.viewCase.noMatchingCase}
+        </div>
+      ) : (
+        <ul
+          ref={listRef}
+          id="view-case-listbox"
+          role="listbox"
+          className="max-h-[288px] overflow-y-auto py-1"
+        >
+          {filteredCases.map((caseNo, idx) => {
+            const isHighlighted = idx === highlightedIndex;
+            const isSelected = caseNo === selectedCaseNo;
+            return (
+              <li
+                key={caseNo}
+                role="option"
+                aria-selected={isSelected}
+                onMouseEnter={() => setHighlightedIndex(idx)}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleChooseCase(caseNo);
+                }}
+                className={`cursor-pointer px-3.5 py-2 text-[13px] font-mono-num transition-colors ${
+                  isSelected
+                    ? 'bg-[#00227A] text-white font-semibold'
+                    : isHighlighted
+                      ? 'bg-[#eef2fb] text-[#00227A] font-medium'
+                      : 'text-[#1d1d1f] hover:bg-[#eef2fb]'
+                }`}
+              >
+                {caseNo}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  )}
+</div>
+
+
+// ============================================================================
+// C. CARDS & FEEDBACK SURFACES (copied verbatim from app components)
+// ============================================================================
+
+// 1. Standard Glass Section Card with Header & Empty State (src/components/DashboardTab.tsx)
+<section className="xl:col-span-12 glass-panel p-6">
+  <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+    <h2 className="text-[15px] font-semibold text-[#1d1d1f] tracking-[-0.01em]">
+      {UI_TEXT.charts.complaintsYtdTitle}
+    </h2>
+    <span className="text-[12px] text-[#86868b]">
+      {UI_TEXT.charts.complaintsYtdUnit}
+    </span>
+  </div>
+
+  {/* Nested empty state box (.glass-inset, NO backdrop-filter) */}
+  <div className="glass-inset flex h-[320px] items-center justify-center text-[14px] text-[#86868b]">
+    {UI_TEXT.app.noDataForFilter}
+  </div>
+</section>
+
+// 2. Loading & Initial Error Cards (src/App.tsx)
+{/* Loading State */}
+<div className="glass-panel flex min-h-[420px] flex-col items-center justify-center p-10">
+  <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#00227A]/25 border-t-[#00227A]" />
+  <p className="mt-4 text-[15px] font-semibold text-[#1d1d1f]">
+    {UI_TEXT.app.loadingTitle}
+  </p>
+  <p className="mt-1 text-[13px] text-[#86868b]">
+    {UI_TEXT.app.loadingSubtitle}
+  </p>
+</div>
+
+{/* Initial Error State */}
+<div className="glass-panel flex min-h-[420px] flex-col items-center justify-center p-10 text-center">
+  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ff3b30]/10 text-[#ff3b30]">
+    <AlertCircle className="h-6 w-6" />
+  </div>
+  <h2 className="mt-4 text-[16px] font-semibold text-[#1d1d1f]">
+    {UI_TEXT.app.errorTitle}
+  </h2>
+  <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-[#86868b]">
+    {errorMessage}
+  </p>
+  <button
+    type="button"
+    onClick={() => void loadData(true)}
+    className="glass-btn-primary mt-6 px-6 py-2.5 text-[13px] font-medium whitespace-nowrap"
+  >
+    {UI_TEXT.app.retry}
+  </button>
+</div>
+
+// 3. Top-Level Glass Status Banner (src/components/AdminTab.tsx)
+{feedback && (
+  <div
+    role="status"
+    className="glass-panel flex items-start gap-3 px-4 py-3.5 text-[13px] text-[#1d1d1f]"
+  >
+    {feedback.type === 'success' ? (
+      <CheckCircle2 className="h-4 w-4 shrink-0 text-[#34c759] mt-0.5" />
+    ) : (
+      <AlertCircle className="h-4 w-4 shrink-0 text-[#ff3b30] mt-0.5" />
+    )}
+    <span className="leading-relaxed">{feedback.message}</span>
+  </div>
+)}
+
+// 4. Inline Semantic Feedback Banner inside a Glass Card (src/components/AdminCaseClassification.tsx)
+{feedback && (
+  <div
+    role={feedback.type === 'error' ? 'alert' : 'status'}
+    className={`mb-4 flex items-start gap-2.5 rounded-[14px] px-3.5 py-2.5 text-[13px] border ${
+      feedback.type === 'success'
+        ? 'bg-[#34c759]/[0.1] border-[#34c759]/25 text-[#1d1d1f]'
+        : 'bg-[#ff3b30]/[0.09] border-[#ff3b30]/25 text-[#1d1d1f]'
+    }`}
+  >
+    {feedback.type === 'success' ? (
+      <CheckCircle2 className="h-4 w-4 shrink-0 text-[#248a3d] mt-0.5" />
+    ) : (
+      <AlertCircle className="h-4 w-4 shrink-0 text-[#ff3b30] mt-0.5" />
+    )}
+    <span className="leading-relaxed">{feedback.message}</span>
+  </div>
+)}
+
+// 5. Key-Value Metrics Inset Box (src/components/AdminTab.tsx)
+function DiffMetricsGrid({ diff }: { diff: CsvUploadDiff }) {
+  const m = UI_TEXT.admin.summaryMetrics;
+  const rows = [
+    {
+      label: m.rowsInFileVsCurrent,
+      value: `${formatInteger(diff.fileRowCount)} vs ${formatInteger(diff.currentRowCount)}`,
+    },
+    {
+      label: m.distinctCasesVsCurrent,
+      value: `${formatInteger(diff.fileDistinctCases)} vs ${formatInteger(diff.currentDistinctCases)}`,
+    },
+    {
+      label: m.newCasesInFile,
+      value: formatInteger(diff.newCasesCount),
+      highlight: diff.newCasesCount > 0 ? 'text-[#34c759]' : 'text-[#1d1d1f]',
+    },
+    {
+      label: m.missingFromFile,
+      value: formatInteger(diff.missingFromFileCount),
+      highlight: diff.missingFromFileCount > 0 ? 'text-[#ff9500]' : 'text-[#1d1d1f]',
+    },
+    {
+      label: m.columnsVsCurrent,
+      value: `${formatInteger(diff.fileColumnCount)} vs ${formatInteger(diff.currentColumnCount)}`,
+    },
+  ];
+
+  return (
+    <div className="divide-y divide-black/[0.06] rounded-[12px] bg-white/75 border border-black/[0.06]">
+      {rows.map((item) => (
+        <div
+          key={item.label}
+          className="flex items-center justify-between gap-4 px-3.5 py-2.5 text-[13px]"
+        >
+          <span className="text-[#86868b]">{item.label}</span>
+          <span
+            className={`font-mono-num font-semibold whitespace-nowrap ${
+              item.highlight ?? 'text-[#1d1d1f]'
+            }`}
+          >
+            {item.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+// ============================================================================
+// D. TABS & FILTER PILLS (copied verbatim from app components)
+// ============================================================================
+
+// 1. Primary Tab Pills Bar (src/App.tsx)
+<nav
+  aria-label="Dashboard sections"
+  className="flex items-center gap-1.5 overflow-x-auto max-w-full py-0.5"
+>
+  {visibleTabs.map((tab) => {
+    const isActive = activeTab === tab.key;
+    return (
+      <button
+        key={tab.key}
+        type="button"
+        onClick={() => setActiveTab(tab.key)}
+        className={`${
+          isActive ? 'glass-pill-active' : 'glass-pill'
+        } px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0`}
+      >
+        {tab.label}
+      </button>
+    );
+  })}
+</nav>
+
+// 2. Multi-Select Slicer Chip Row (src/components/DashboardTab.tsx)
+interface SlicerChipRowProps {
+  label: string;
+  options: { value: string; label: string }[];
+  selected: string[];
+  onToggle: (value: string) => void;
+  onClear: () => void;
+}
+
+function SlicerChipRow({
+  label,
+  options,
+  selected,
+  onToggle,
+  onClear,
+}: SlicerChipRowProps) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <div className="flex items-center justify-between sm:justify-start gap-2 sm:w-[116px] shrink-0">
+        <span className="text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b]">
+          {label}
+        </span>
+        {selected.length > 0 && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="text-[11px] font-medium text-[#00227A] hover:text-[#0a35a3] underline underline-offset-2 transition-colors whitespace-nowrap shrink-0"
+          >
+            {UI_TEXT.slicers.clear}
+          </button>
+        )}
+      </div>
+      <div className="flex flex-wrap items-center gap-1.5">
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt.value);
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              aria-pressed={isSelected}
+              onClick={() => onToggle(opt.value)}
+              className={`${
+                isSelected ? 'glass-pill-active' : 'glass-pill'
+              } px-3 py-1 text-[12px] font-medium whitespace-nowrap shrink-0`}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// 3. Single-Select Pill Control Group (src/components/InsightsTab.tsx)
+<div className="flex flex-col gap-1.5">
+  <span className="text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] px-1">
+    {UI_TEXT.insights.controls.region}
+  </span>
+  <div
+    className="flex flex-wrap items-center gap-1.5"
+    role="group"
+    aria-label={UI_TEXT.insights.controls.region}
+  >
+    {(['North Asia', 'South Asia', 'Entire Asia'] as const).map((reg) => (
+      <button
+        key={reg}
+        type="button"
+        onClick={() => setRegion(reg)}
+        className={`${
+          region === reg ? 'glass-pill-active' : 'glass-pill'
+        } px-3.5 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0`}
+      >
+        {reg === 'North Asia'
+          ? UI_TEXT.insights.regions.northAsia
+          : reg === 'South Asia'
+            ? UI_TEXT.insights.regions.southAsia
+            : UI_TEXT.insights.regions.entireAsia}
+      </button>
+    ))}
+  </div>
+</div>
+
+
+// ============================================================================
+// E. NAVIGATION BAR & LIQUID GLASS PAGE SHELL (src/App.tsx, copied verbatim)
+// ============================================================================
+<div className="relative min-h-screen flex flex-col text-[#1d1d1f] overflow-x-clip">
+  {/* Fixed ambient color blobs behind Liquid Glass surfaces (static, no animation) */}
+  <div className="liquid-bg-canvas" aria-hidden="true">
+    <div className="liquid-blob-navy" />
+    <div className="liquid-blob-cobalt" />
+    <div className="liquid-blob-sky" />
+  </div>
+
+  {/* Foreground shell */}
+  <div className="relative z-10 flex min-h-screen flex-col">
+    {/* Top Sticky Liquid Glass Nav */}
+    <header className="glass-nav mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)] max-w-[1376px] mt-3 px-4 sm:px-6 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {/* Brand Logo & Title */}
+        <div className="flex items-center gap-3 min-w-0">
+          {!logoFailed && (
+            <img
+              src="https://res.cloudinary.com/dorqvdstv/image/upload/v1785116299/AN_Logo_Color_xzz9l2.png"
+              alt="AkzoNobel"
+              onError={() => setLogoFailed(true)}
+              className="h-[22px] min-[769px]:h-[28px] w-auto object-contain shrink-0"
+            />
+          )}
+          <div className="flex items-baseline gap-2.5 min-w-0">
+            <h1 className="text-[16px] sm:text-[17px] font-semibold text-[#1d1d1f] tracking-[-0.01em] whitespace-nowrap">
+              {UI_TEXT.app.title}
+            </h1>
+            <span className="hidden lg:inline text-[12px] text-[#525257] whitespace-nowrap">
+              {UI_TEXT.app.organization}
+            </span>
+          </div>
+        </div>
+
+        {/* Primary Tab Pills */}
+        <nav
+          aria-label="Dashboard sections"
+          className="flex items-center gap-1.5 overflow-x-auto max-w-full py-0.5"
+        >
+          {visibleTabs.map((tab) => {
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setActiveTab(tab.key)}
+                className={`${
+                  isActive ? 'glass-pill-active' : 'glass-pill'
+                } px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Refresh Action */}
+        <button
+          type="button"
+          disabled={loading || refreshing}
+          onClick={() => void loadData(false)}
+          className="glass-pill inline-flex items-center gap-1.5 px-4 py-1.5 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0"
+        >
+          <RefreshCw
+            className={`h-3.5 w-3.5 text-[#525257] ${
+              refreshing ? 'animate-spin text-[#00227A]' : ''
+            }`}
+          />
+          {refreshing ? UI_TEXT.app.refreshing : UI_TEXT.app.refresh}
+        </button>
+      </div>
+    </header>
+
+    {/* Main Content (top padding keeps first content clear of sticky glass nav) */}
+    <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 sm:px-6 lg:px-8 pt-6 pb-8">
+      {/* Tab content rendered here */}
+    </main>
+
+    {/* Footer on every tab */}
+    <footer className="mt-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-[12px] text-[#86868b]">
+      <div className="mx-auto max-w-[1440px]">
+        <div>{UI_TEXT.footer.developedBy}</div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
+// ============================================================================
+// F. POPUPS (copied verbatim from app components)
+// ============================================================================
+
+// 1. Confirmation Modal Dialog (src/components/ConfirmDialog.tsx — complete file)
+import { useEffect, type ReactNode } from 'react';
+import { UI_TEXT } from '../config';
+
+interface ConfirmDialogProps {
+  open: boolean;
+  title: string;
+  message: string;
+  confirmLabel: string;
+  cancelLabel?: string;
+  confirmTone?: 'primary' | 'danger';
+  busy?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  children?: ReactNode;
+}
+
+export function ConfirmDialog({
+  open,
+  title,
+  message,
+  confirmLabel,
+  cancelLabel = UI_TEXT.admin.cancelButton,
+  confirmTone = 'primary',
+  busy = false,
+  onConfirm,
+  onCancel,
+  children,
+}: ConfirmDialogProps) {
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && !busy) {
+        onCancel();
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open, busy, onCancel]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
+      onClick={() => {
+        if (!busy) onCancel();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-dialog-title"
+    >
+      <div
+        className="glass-panel w-full max-w-lg p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3
+          id="confirm-dialog-title"
+          className="text-[17px] font-semibold text-[#1d1d1f] tracking-[-0.01em]"
+        >
+          {title}
+        </h3>
+        <p className="mt-2 text-[14px] leading-relaxed text-[#525257]">{message}</p>
+
+        {children && <div className="mt-4">{children}</div>}
+
+        <div className="mt-6 flex items-center justify-end gap-3">
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onCancel}
+            className="glass-btn-secondary px-5 py-2.5 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0"
+          >
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onConfirm}
+            className={`${
+              confirmTone === 'danger'
+                ? 'rounded-full bg-[#ff3b30] hover:bg-[#e0352b] text-white shadow-[0_4px_12px_rgba(255,59,48,0.28)] transition-all'
+                : 'glass-btn-primary'
+            } px-5 py-2.5 text-[13px] font-medium disabled:opacity-50 whitespace-nowrap shrink-0`}
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 2. Floating Chart Tooltip Popup (src/components/DashboardTab.tsx)
+interface CustomTooltipPayloadItem {
+  name?: string;
+  value?: number;
+  color?: string;
+  payload?: Record<string, unknown>;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  label?: string;
+  payload?: CustomTooltipPayloadItem[];
+  mode: 'count' | 'countStacked' | 'eur' | 'aging100' | 'agingCount';
+}
+
+function ChartTooltip({ active, label, payload, mode }: CustomTooltipProps) {
+  if (!active || !payload || payload.length === 0) return null;
+
+  const nonZero = payload.filter((entry) => Number(entry.value ?? 0) !== 0);
+  if (nonZero.length === 0) return null;
+
+  const rawPayload = nonZero[0]?.payload ?? {};
+  const headerLabel =
+    typeof rawPayload.__tooltipLabel === 'string'
+      ? rawPayload.__tooltipLabel
+      : label;
+  const totalValue = nonZero.reduce((acc, item) => {
+    if (mode === 'aging100') {
+      const name = String(item.name ?? '');
+      return acc + Number(rawPayload[`__cnt_${name}`] ?? 0);
+    }
+    return acc + Number(item.value ?? 0);
+  }, 0);
+
+  return (
+    <div className="rounded-[16px] bg-white/[0.96] px-3.5 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.14)] border border-black/[0.08] text-[12px] min-w-[176px]">
+      <div className="font-semibold text-[#1d1d1f] mb-1.5 pb-1 border-b border-black/[0.06]">
+        {headerLabel}
+      </div>
+      <div className="space-y-1">
+        {nonZero.map((entry) => {
+          const val = Number(entry.value ?? 0);
+          const name = String(entry.name ?? '');
+          let formatted = '';
+          if (mode === 'count' || mode === 'countStacked' || mode === 'agingCount') {
+            formatted = formatInteger(val);
+          } else if (mode === 'eur') {
+            formatted = `${formatEur(val, 2)} EUR`;
+          } else {
+            const cnt = Number(rawPayload[`__cnt_${name}`] ?? 0);
+            formatted = `${formatInteger(cnt)} (${formatPercent(val, 1)})`;
+          }
+
+          return (
+            <div key={name} className="flex items-center justify-between gap-4">
+              <span className="flex items-center gap-1.5 text-[#1d1d1f] truncate">
+                <span
+                  className="h-2.5 w-2.5 shrink-0 rounded-[3px]"
+                  style={{ backgroundColor: entry.color }}
+                />
+                <span className="truncate">{name}</span>
+              </span>
+              <span className="font-mono-num font-medium text-[#1d1d1f] whitespace-nowrap">
+                {formatted}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      {(nonZero.length > 1 || mode === 'countStacked') && (
+        <div className="mt-1.5 pt-1.5 border-t border-black/[0.06] flex items-center justify-between gap-4 font-semibold text-[#1d1d1f]">
+          <span>{UI_TEXT.charts.totalLabel}</span>
+          <span className="font-mono-num whitespace-nowrap">
+            {mode === 'eur'
+              ? `${formatEur(totalValue, 2)} EUR`
+              : formatInteger(totalValue)}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ============================================================================
+// G. TABLES (copied verbatim from app components)
+// ============================================================================
+
+// 1. Key-Value Detail Table (src/components/ViewCaseTab.tsx)
+<div className="glass-table-wrap overflow-x-auto">
+  <table className="w-full border-collapse text-[13px]">
+    <tbody className="divide-y divide-black/[0.06]">
+      {detailRows.map((item) => (
+        <tr
+          key={item.label}
+          className="hover:bg-white/40 transition-colors align-top"
+        >
+          <th
+            scope="row"
+            className="w-[150px] sm:w-[260px] px-4 py-3 text-left text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] bg-white/30 whitespace-nowrap"
+          >
+            {item.label}
+          </th>
+          <td
+            className={`px-4 py-3 text-[#1d1d1f] break-words ${
+              item.mono ? 'font-mono-num' : ''
+            } ${
+              item.multiline
+                ? 'whitespace-pre-wrap leading-relaxed'
+                : ''
+            }`}
+            title={item.originalTitle}
+          >
+            {item.value || '—'}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+// 2. Grouped Financial Summary Table with Subtotals & Grand Total (src/components/DashboardTab.tsx)
+<div className="glass-table-wrap overflow-x-auto">
+  <table className="w-full min-w-[540px] border-collapse text-[13px]">
+    <thead>
+      <tr className="bg-white/45 border-b border-black/[0.07]">
+        <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b]">
+          {UI_TEXT.settlementTable.yearRegionHeader}
+        </th>
+        {settlementTable.types.map((sType) => (
+          <th
+            key={sType}
+            className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] whitespace-nowrap"
+          >
+            {sType}
+          </th>
+        ))}
+        <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-[0.04em] text-[#1d1d1f] whitespace-nowrap">
+          {UI_TEXT.settlementTable.grandTotal}
+        </th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-black/[0.06]">
+      {settlementTable.yearGroups.map((group) => (
+        <YearGroupRows
+          key={group.year}
+          group={group}
+          types={settlementTable.types}
+        />
+      ))}
+    </tbody>
+    <tfoot>
+      <tr className="bg-white/55 border-t border-black/[0.09] font-semibold text-[#1d1d1f]">
+        <td className="px-4 py-3 text-left">
+          {UI_TEXT.settlementTable.grandTotal}
+        </td>
+        {settlementTable.types.map((sType) => (
+          <td
+            key={sType}
+            className="px-4 py-3 text-right font-mono-num whitespace-nowrap"
+          >
+            {formatEur(settlementTable.grandByType[sType] ?? 0, 2)}
+          </td>
+        ))}
+        <td className="px-4 py-3 text-right font-mono-num whitespace-nowrap">
+          {formatEur(settlementTable.grandTotal, 2)}
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+// YearGroupRows helper for the Grouped Financial Summary Table (src/components/DashboardTab.tsx)
+function YearGroupRows({ group, types }: YearGroupRowsProps) {
+  return (
+    <>
+      <tr className="bg-white/35 font-semibold text-[#1d1d1f]">
+        <td className="px-4 py-2.5 text-left font-mono-num">{group.year}</td>
+        {types.map((sType) => (
+          <td
+            key={sType}
+            className="px-4 py-2.5 text-right font-mono-num whitespace-nowrap"
+          >
+            {formatEur(group.yearByType[sType] ?? 0, 2)}
+          </td>
+        ))}
+        <td className="px-4 py-2.5 text-right font-mono-num whitespace-nowrap">
+          {formatEur(group.yearTotal, 2)}
+        </td>
+      </tr>
+      {group.regionRows.map((regRow) => (
+        <tr
+          key={`${group.year}-${regRow.region}`}
+          className="hover:bg-white/45 transition-colors"
+        >
+          <td className="pl-8 pr-4 py-2.5 text-left text-[#1d1d1f]">
+            {regRow.region}
+          </td>
+          {types.map((sType) => (
+            <td
+              key={sType}
+              className="px-4 py-2.5 text-right font-mono-num text-[#1d1d1f] whitespace-nowrap"
+            >
+              {formatEur(regRow.values[sType] ?? 0, 2)}
+            </td>
+          ))}
+          <td className="px-4 py-2.5 text-right font-mono-num font-medium text-[#1d1d1f] whitespace-nowrap">
+            {formatEur(regRow.total, 2)}
+          </td>
+        </tr>
+      ))}
+    </>
+  );
+}
+
+// 3. Multi-Column Data List Table with Status & Link Cells (src/components/InsightsTab.tsx)
+<div className="glass-table-wrap overflow-x-auto">
+  <table className="w-full min-w-[1260px] border-collapse text-[13px]">
+    <thead>
+      <tr className="bg-white/45 border-b border-black/[0.07]">
+        <th className="px-3.5 py-3 text-left text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] whitespace-nowrap">
+          {cols.caseNo}
+        </th>
+        <th className="px-3.5 py-3 text-left text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] whitespace-nowrap">
+          {cols.status}
+        </th>
+        <th className="px-3.5 py-3 text-left text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] whitespace-nowrap">
+          {cols.createAt}
+        </th>
+        <th className="px-3.5 py-3 text-right text-[11px] font-medium uppercase tracking-[0.04em] text-[#86868b] whitespace-nowrap">
+          {cols.settlementValueEur}
+        </th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-black/[0.06]">
+      {matchingRows.map((r) => (
+        <tr key={r.rowIndex} className="hover:bg-white/45 transition-colors">
+          <td className="px-3.5 py-2.5 whitespace-nowrap">
+            {r.caseNo ? (
+              <button
+                type="button"
+                onClick={() => onOpenCase(r.caseNo)}
+                className="font-mono-num font-medium text-[#00227A] hover:text-[#0a35a3] hover:underline underline-offset-2 transition-colors text-left"
+              >
+                {r.caseNo}
+              </button>
+            ) : (
+              <span className="font-mono-num text-[#86868b]">—</span>
+            )}
+          </td>
+          <td
+            className={`px-3.5 py-2.5 font-medium whitespace-nowrap ${
+              r.internalStatus === 'Closed'
+                ? 'text-[#34c759]'
+                : 'text-[#ff9500]'
+            }`}
+          >
+            {r.internalStatus || '—'}
+          </td>
+          <td className="px-3.5 py-2.5 font-mono-num text-[#86868b] whitespace-nowrap">
+            {r.createdAtRaw || '—'}
+          </td>
+          <td className="px-3.5 py-2.5 text-right tabular-nums font-medium text-[#1d1d1f] whitespace-nowrap">
+            {formatEur(r.settlementEur, 2)}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+// 4. Sticky-Header Editable Grid Table (src/components/AdminCaseClassification.tsx)
+<div className="glass-table-wrap max-h-[60vh] overflow-auto">
+  <table className="w-full min-w-[760px] border-collapse text-[13px]">
+    <thead>
+      <tr className="sticky top-0 z-10 bg-[#f1f4fb] border-b border-black/[0.1]">
+        <th className="px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.04em] text-[#525257] border-r border-black/[0.08] whitespace-nowrap w-[160px]">
+          {t.columns.caseNo}
+        </th>
+        <th className="px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.04em] text-[#525257] border-r border-black/[0.08] min-w-[200px]">
+          {t.columns.category}
+        </th>
+        <th className="px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.04em] text-[#525257] border-r border-black/[0.08] min-w-[160px]">
+          {t.columns.product}
+        </th>
+        <th className="px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.04em] text-[#525257] border-r border-black/[0.08] min-w-[140px]">
+          {t.columns.segment}
+        </th>
+        <th className="px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.04em] text-[#525257] whitespace-nowrap w-[130px]">
+          {t.columns.actions}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {visibleManualRows.map(({ entry, originalIndex }) => {
+        const isEditing = editingIndex === originalIndex;
+        return (
+          <tr
+            key={`${entry.case}-${originalIndex}`}
+            className={`border-b border-black/[0.08] ${
+              isEditing
+                ? 'bg-[#00227A]/[0.06]'
+                : 'bg-white/45 hover:bg-white/75 transition-colors'
+            }`}
+          >
+            <td className="px-3.5 py-2 font-mono-num font-medium text-[#1d1d1f] border-r border-black/[0.08] whitespace-nowrap">
+              {entry.case}
+            </td>
+            {isEditing ? (
+              <>
+                <td className="p-1.5 border-r border-black/[0.08]">
+                  <input
+                    type="text"
+                    list="manual-category-suggestions"
+                    disabled={sectionBusy}
+                    value={editCategory}
+                    onChange={(e) => setEditCategory(e.target.value)}
+                    className="glass-input h-9 w-full px-2.5 text-[16px] sm:text-[13px] disabled:opacity-60"
+                  />
+                </td>
+                <td className="p-1.5 border-r border-black/[0.08]">
+                  <input
+                    type="text"
+                    list="manual-product-suggestions"
+                    disabled={sectionBusy}
+                    value={editProduct}
+                    onChange={(e) => setEditProduct(e.target.value)}
+                    className="glass-input h-9 w-full px-2.5 text-[16px] sm:text-[13px] disabled:opacity-60"
+                  />
+                </td>
+                <td className="p-1.5 border-r border-black/[0.08]">
+                  <input
+                    type="text"
+                    list="manual-segment-suggestions"
+                    disabled={sectionBusy}
+                    value={editSegment}
+                    onChange={(e) => setEditSegment(e.target.value)}
+                    className="glass-input h-9 w-full px-2.5 text-[16px] sm:text-[13px] disabled:opacity-60"
+                  />
+                </td>
+                <td className="px-3.5 py-2 whitespace-nowrap">
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      disabled={sectionBusy}
+                      onClick={() => void handleSaveEdit(entry.case)}
+                      className="text-[13px] font-semibold text-[#00227A] hover:text-[#0a35a3] disabled:opacity-50"
+                    >
+                      {busyAction === 'save' ? t.actions.saving : t.actions.save}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={sectionBusy}
+                      onClick={cancelEditRow}
+                      className="text-[13px] font-medium text-[#525257] hover:text-[#1d1d1f] disabled:opacity-50"
+                    >
+                      {t.actions.cancel}
+                    </button>
+                  </div>
+                </td>
+              </>
+            ) : (
+              <>
+                <td className="px-3.5 py-2 text-[#1d1d1f] border-r border-black/[0.08] break-words">
+                  {entry.category}
+                </td>
+                <td className="px-3.5 py-2 text-[#1d1d1f] border-r border-black/[0.08] break-words">
+                  {entry.product}
+                </td>
+                <td className="px-3.5 py-2 text-[#1d1d1f] border-r border-black/[0.08] break-words">
+                  {entry.segment}
+                </td>
+                <td className="px-3.5 py-2 whitespace-nowrap">
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      disabled={sectionBusy}
+                      onClick={() => startEditRow(entry, originalIndex)}
+                      className="text-[13px] font-medium text-[#00227A] hover:text-[#0a35a3] disabled:opacity-45"
+                    >
+                      {t.actions.edit}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={sectionBusy}
+                      onClick={() => {
+                        setFeedback(null);
+                        setDeleteTargetCase(entry.case);
+                      }}
+                      className="text-[13px] font-medium text-[#ff3b30] hover:text-[#d62c22] disabled:opacity-45"
+                    >
+                      {t.actions.delete}
+                    </button>
+                  </div>
+                </td>
+              </>
+            )}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
+________________________________________
+5. Rules & Invariants
+Text
+================================================================================
+WHEN TO USE WHICH COLOR
+================================================================================
+#00227A (Primary Navy) + #0a35a3 (Hover):
+  - Primary CTA buttons (.glass-btn-primary), active nav tabs & active slicer chips (.glass-pill-active),
+    active outline toggles (.glass-translate-btn-active), active toggle switches, focused input borders,
+    clickable Case IDs, and inline links/actions ("Clear", "Edit", "Save", "Retry").
+  - Do NOT use #00227A as a chart series color (charts use CHART_SERIES_PALETTE instead).
+
+#1d1d1f (Primary Ink):
+  - All headings, primary body copy, table values, resting pill/button labels, chart axis ticks, and totals.
+
+#525257 (Secondary Ink):
+  - Header organization subtitle, dialog body paragraphs, neutral icons (Refresh, LogOut, RotateCcw),
+    sticky grid table headers, and secondary text links ("Use a different email", "Cancel").
+
+#86868b (Muted Ink):
+  - All 11px uppercase field labels and standard table column headers, placeholders, chart unit captions,
+    empty-state messages, timestamps/dates in tables, and footer text.
+
+#ff3b30 (Danger Red) / #e0352b & #d62c22 (Hovers):
+  - Destructive confirm buttons (Delete / Restore), inline "Delete" text actions, validation errors,
+    API failure banners, and alert icons.
+
+#34c759 (Bright Green) / #248a3d (Dark Green):
+  - #34c759 for "Closed" status text in tables, positive diff counts, and top-level banner success icons.
+  - #248a3d for readable green status text and icons on light/tinted surfaces (login success, inline banner icons).
+
+#ff9500 (Amber Orange):
+  - "Open" case status text and warning counts (e.g., cases missing from uploaded file).
+
+Chart Series Palette (#005192, #E0457A, #542C97, #008BC5, #A8269A, #000394):
+  - Used strictly in exact order (1 to 6) for chart bars, legends, and tooltip dots.
+  - Series 7-12 repeat colors 1-6 at 60% opacity (rgba(..., 0.6)); series 13+ (where applicable) at 35% opacity.
+
+================================================================================
+WHEN TO USE WHICH ELEMENT
+================================================================================
+.glass-nav:
+  - Only once per app, for the floating sticky top navigation bar.
+
+.glass-panel:
+  - Top-level content cards, filter/control bars, login box, top-level status banners, and modal dialog boxes.
+
+.glass-inset:
+  - Secondary containers nested INSIDE a .glass-panel (empty states, inline Add-Record forms, upload diff previews).
+
+.glass-table-wrap:
+  - Always wraps every <table> inside a .glass-panel to give rounded 16px corners, subtle border, and scroll area.
+
+.glass-pill / .glass-pill-active:
+  - Navigation tabs, slicer filter chips, segmented choice groups, and lightweight top-bar utility actions (Refresh, Log out).
+
+.glass-btn-primary / .glass-btn-secondary:
+  - Form submissions, modal confirmation actions, and primary/secondary workflow buttons (Upload, Add record, Cancel, Restore).
+
+.glass-translate-btn / .glass-translate-btn-active:
+  - Compact 32px outlined utility/toggle pills placed in the top-right corner of cards or dashboards (Translate toggle, Export PPTX).
+
+Solid white dropdowns (bg-white, rounded-[16px] or rounded-[14px]):
+  - Floating searchable menus and tooltips — always opaque or near-opaque white, never blurred glass.
+
+.font-mono-num:
+  - Mandatory on all Case numbers, dates, timestamps, currency amounts, percentages, counts, and numeric axes.
+
+================================================================================
+MUST NEVER BE CHANGED TO KEEP THE LOOK
+================================================================================
+1. Keep the static 3-blob ambient canvas (#eef2fb + .liquid-blob-navy / cobalt / sky) behind all glass surfaces —
+   without the colored background blobs, frosted glass panels look flat gray. Never animate the blobs.
+2. NEVER put backdrop-filter on nested elements inside .glass-panel or .glass-nav (pills, buttons, inputs,
+   insets, tables, dropdowns). Only .glass-nav and .glass-panel use backdrop-filter.
+3. Preserve the 1px diagonal specular border (::before with 135deg white gradient + mask-composite: exclude)
+   and the top inner edge highlight (inset 0 1px 0 rgba(255, 255, 255, 0.6)) on .glass-nav and .glass-panel.
+4. Keep the corner radius hierarchy intact: 24px outer panels -> 16px insets/tables/popups -> 12px inputs ->
+   9999px pills and buttons.
+5. Keep the primary accent strictly #00227A (hover #0a35a3), the Apple/Inter sans stack with -0.01em heading
+   tracking, and 11px uppercase 0.04em tracked labels in #86868b.
+6. Keep the brand logo clean — never apply filters, shadows, or backdrop-filter to the logo image.
+7. Keep transitions fast and uniform at 150ms ease, and keep mobile blur reduced to 12px at <=767px for smooth scrolling.
+
