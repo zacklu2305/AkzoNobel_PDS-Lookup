@@ -13,6 +13,12 @@ const MSDS_SEARCH_URL =
 const REQUEST_TIMEOUT_MS = 5 * 60 * 1000;
 const SLOW_SEARCH_NOTICE_MS = 8 * 1000;
 
+const SHOW_LOGO = true;
+const LOGO_SIDE: 'left' | 'right' = 'right';
+const TABS_BELOW_HEADER = true;
+const LOGO_URL =
+  'https://res.cloudinary.com/dorqvdstv/image/upload/v1785116299/AN_Logo_Color_xzz9l2.png';
+
 interface SearchResultItem {
   name: string;
   url: string;
@@ -71,6 +77,7 @@ export default function App() {
       !MSDS_SEARCH_URL.includes('PASTE_')
   );
   const [activeTab, setActiveTab] = useState<'pds' | 'msds'>('pds');
+  const [logoFailed, setLogoFailed] = useState(false);
 
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -235,6 +242,16 @@ export default function App() {
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="glass-nav mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-[720px] mt-3 px-4 sm:px-6 py-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
+            {SHOW_LOGO && LOGO_SIDE === 'left' && !logoFailed && (
+              <img
+                src={LOGO_URL}
+                alt="AkzoNobel"
+                referrerPolicy="no-referrer"
+                onError={() => setLogoFailed(true)}
+                className="h-[32px] md:h-[40px] w-auto object-contain shrink-0"
+              />
+            )}
+
             <div className="min-w-0">
               <h1 className="text-[16px] sm:text-[17px] font-semibold leading-tight tracking-[-0.01em] text-[#1d1d1f]">
                 PDS/ MSDS Look-up
@@ -244,7 +261,7 @@ export default function App() {
               </p>
             </div>
 
-            {isMsdsEnabled && (
+            {!TABS_BELOW_HEADER && isMsdsEnabled && (
               <div
                 role="tablist"
                 aria-label="Search category"
@@ -278,10 +295,63 @@ export default function App() {
                 </button>
               </div>
             )}
+
+            {SHOW_LOGO && LOGO_SIDE === 'right' && !logoFailed && (
+              <img
+                src={LOGO_URL}
+                alt="AkzoNobel"
+                referrerPolicy="no-referrer"
+                onError={() => setLogoFailed(true)}
+                className="h-[32px] md:h-[40px] w-auto object-contain shrink-0"
+              />
+            )}
           </div>
         </header>
 
-        <main className="w-full max-w-[720px] mx-auto px-4 sm:px-6 pt-6 pb-8 flex-1 flex flex-col">
+        {TABS_BELOW_HEADER && isMsdsEnabled && (
+          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 my-3 flex justify-center">
+            <div
+              role="tablist"
+              aria-label="Search category"
+              className="w-full md:w-auto flex items-center gap-1.5 py-0.5"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'pds'}
+                onClick={() => setActiveTab('pds')}
+                className={
+                  activeTab === 'pds'
+                    ? 'glass-pill-active flex-1 md:flex-initial text-center px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00227A]'
+                    : 'glass-pill flex-1 md:flex-initial text-center px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00227A]'
+                }
+              >
+                PDS
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'msds'}
+                onClick={() => setActiveTab('msds')}
+                className={
+                  activeTab === 'msds'
+                    ? 'glass-pill-active flex-1 md:flex-initial text-center px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00227A]'
+                    : 'glass-pill flex-1 md:flex-initial text-center px-4 py-1.5 text-[13px] font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00227A]'
+                }
+              >
+                MSDS
+              </button>
+            </div>
+          </div>
+        )}
+
+        <main
+          className={
+            TABS_BELOW_HEADER && isMsdsEnabled
+              ? 'w-full max-w-[720px] mx-auto px-4 sm:px-6 pt-0 pb-8 flex-1 flex flex-col'
+              : 'w-full max-w-[720px] mx-auto px-4 sm:px-6 pt-6 pb-8 flex-1 flex flex-col'
+          }
+        >
           <div className={activeTab === 'pds' ? 'flex-1 flex flex-col' : 'hidden'}>
           <section
             aria-label="Search controls"
